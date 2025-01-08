@@ -1,4 +1,4 @@
-# <p align="center">ft_ping</p>
+# <p align="center">ft_traceroute</p>
 
 > Ce projet consiste à recoder une partie de la commande traceroute.
 >
