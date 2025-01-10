@@ -167,19 +167,25 @@ static void missing(char* const opt,
     if(!strcmp(opt, smallopt)) req = src1;
     else req = src2;
 
-    fprintf(stderr, ERR_MISS_OPT, opt, ac - 1, req);
+    fprintf(stderr, ERR_MISS_OPT, opt, ac, req);
     failure(EXIT_USAGE, opt, NULL);
 }
 
 void getargs(const int ac, char** const av) {
 
+    for(int x = 1; x < ac; x++) {
+
+        if(strcmp(av[x], "--help")) continue;
+        printf(USAGE);
+        exit(EXIT_SUCCESS);
+    }
     data.opts.fragment = YES;
     data.opts.first = 1;
     data.opts.max_hops = 30;
     data.opts.sim_queries = 16;
     data.opts.resolve = YES;
-    data.opts.port = 33434;
-    data.opts.wait = 5;
+    data.opts.port = PORT_MIN;
+    data.opts.wait = 0.5;
     data.opts.queries = 3;
 
     int x = 1;
@@ -201,13 +207,13 @@ void getargs(const int ac, char** const av) {
 
                 if(!arg[0] || !is_numeric(arg, NO)) {
 
-                    fprintf(stderr, ERR_CMD_ARG, "packetlen", arg, ac);
+                    fprintf(stderr, ERR_CMD_ARG, "packetlen", arg, x - 1);
                     failure(EXIT_USAGE, opt, arg);
                 }
                 data.opts.packetlen = atoi(arg);
             }
             else {
-                fprintf(stderr, ERR_XTRA_ARG, arg, ac - 1);
+                fprintf(stderr, ERR_XTRA_ARG, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             continue;
@@ -222,15 +228,15 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-f first_ttl";
                 char* const src2 = "--first=first_ttl";
-                missing(opt, "-f", src1, src2, ac);
+                missing(opt, "-f", src1, src2, x - 1);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, ac);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.first = atoi(arg);
-            if(!data.opts.first || data.opts.first > 30) {
+            if(!data.opts.first) {
 
                 fprintf(stderr, "first hop out of range\n");
                 failure(EXIT_USAGE, opt, arg);
@@ -242,7 +248,7 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-i device";
                 char* const src2 = "--interface=device";
-                missing(opt, "-i", src1, src2, ac);
+                missing(opt, "-i", src1, src2, x - 1);
             }
             if(data.opts.interface) free(data.opts.interface);
             data.opts.interface = strdup(arg);
@@ -253,11 +259,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-m max_ttl";
                 char* const src2 = "--max-hops=max_ttl";
-                missing(opt, "-m", src1, src2, ac);
+                missing(opt, "-m", src1, src2, x - 1);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, ac);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.max_hops = atoi(arg);
@@ -278,11 +284,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-N squeries";
                 char* const src2 = "--sim-queries=squeries";
-                missing(opt, "-N", src1, src2, ac);
+                missing(opt, "-N", src1, src2, x - 1);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, ac);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.sim_queries = atoi(arg);
@@ -298,14 +304,15 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-p port";
                 char* const src2 = "--port=port";
-                missing(opt, "-p", src1, src2, ac);
+                missing(opt, "-p", src1, src2, x - 1);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, ac);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.port = atoi(arg);
+            if(data.opts.port < PORT_MIN) data.opts.port = PORT_MIN;
             continue;
         }
         if(!strcmp(opt, "-w") || !strcmp(opt, "--wait")) {
@@ -313,11 +320,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-w waittime";
                 char* const src2 = "--wait=waittime";
-                missing(opt, "-w", src1, src2, ac);
+                missing(opt, "-w", src1, src2, x - 1);
             }
             if(!arg[0] || !is_numeric(arg, YES)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, ac);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.wait = atof(arg);
@@ -333,11 +340,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-q nqueries";
                 char* const src2 = "--queries=nqueries";
-                missing(opt, "-q", src1, src2, ac);
+                missing(opt, "-q", src1, src2, x - 1);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, ac);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.queries = atoi(arg);
@@ -348,18 +355,23 @@ void getargs(const int ac, char** const av) {
             }
             continue;
         }
-        if(!strcmp(opt, "--help")) {
-
-            printf(USAGE);
-            failure(EXIT_SUCCESS, opt, arg);
-        }
-        fprintf(stderr, ERR_BAD_OPT, opt, ac);
+        fprintf(stderr, ERR_BAD_OPT, opt, x - 1);
         failure(EXIT_USAGE, opt, arg);
     }
     if(opt) free(opt);
     if(arg) free(arg);
+    if(data.opts.first > data.opts.max_hops) {
 
-    if(!data.opts.packetlen) data.opts.packetlen = sizeof(t_ip) + 40;
+        fprintf(stderr, "first hop out of range\n");
+        failure(EXIT_USAGE, NULL, NULL);
+    }
+    if(!data.opts.packetlen) data.opts.packetlen = IP_SIZE + 40;
+    else if(data.opts.packetlen < IP_SIZE + 8) data.opts.packetlen = IP_SIZE + 8;
+    else if(data.opts.packetlen > BUFFER_SIZE - IP_SIZE - 8) {
+
+        fprintf(stderr, "too big packet length specified\n");
+        failure(EXIT_USAGE, NULL, NULL);
+    }
     if(data.host) return;
 
     fprintf(stderr, "Specify \"host\" missing argument.\n");

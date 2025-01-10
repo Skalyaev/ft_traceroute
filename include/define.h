@@ -16,7 +16,7 @@
 "  -p port  --port=port                 Set the initial destination port to use."\
                                         " Default is 33434\n"\
 "  -w waittime  --wait=waittime         Set the number of seconds to wait for response to a probe."\
-                                        " Default is 5\n"\
+                                        " Default is 0.5\n"\
 "  -q nqueries  --queries=nqueries      Set the number of probes per each hop. Default is 3\n"\
 "  --help                               Read this help and exit\n"\
 "\n"\
@@ -40,7 +40,20 @@
 #define YES 1
 #define NO 0
 
-#define BUFFSIZE 1024
+#define PORT_MIN 33434
+
+#define BUFFER_SIZE 1024
+#define PTR_SIZE sizeof(void*)
+#define INT_SIZE sizeof(int)
+#define TIMEVAL_SIZE sizeof(t_timeval)
+#define SOCKADDR_SIZE sizeof(t_sockaddr)
+#define SOCKADDRIN_SIZE sizeof(t_sockaddr_in)
+#define ICMPHDR_SIZE sizeof(t_icmphdr)
+#define UDPHDR_SIZE sizeof(t_udphdr)
+#define IP_SIZE sizeof(t_ip)
+#define TTL_SIZE sizeof(ubyte)
+#define PROBE_SIZE sizeof(t_probe)
+#define HOP_SIZE sizeof(t_hop)
 
 typedef unsigned char bool;
 typedef unsigned char ubyte;

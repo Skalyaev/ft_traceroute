@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <locale.h>
+#include <pthread.h>
 #include <netdb.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
@@ -19,6 +21,7 @@
 #include "struct.h"
 
 void getargs(const int ac, char** const av);
+byte init();
 byte send_udp(const ubyte* const idx,
               ubyte* const sim_queries,
               ubyte* const sent);
