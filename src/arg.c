@@ -182,10 +182,10 @@ void getargs(const int ac, char** const av) {
     data.opts.fragment = YES;
     data.opts.first = 1;
     data.opts.max_hops = 30;
-    data.opts.sim_queries = 16;
+    data.opts.sim_queries = 1;
     data.opts.resolve = YES;
     data.opts.port = PORT_MIN;
-    data.opts.wait = 0.5;
+    data.opts.wait = 0.1;
     data.opts.queries = 3;
 
     int x = 1;
@@ -313,26 +313,6 @@ void getargs(const int ac, char** const av) {
             }
             data.opts.port = atoi(arg);
             if(data.opts.port < PORT_MIN) data.opts.port = PORT_MIN;
-            continue;
-        }
-        if(!strcmp(opt, "-w") || !strcmp(opt, "--wait")) {
-            if(!arg) {
-
-                char* const src1 = "-w waittime";
-                char* const src2 = "--wait=waittime";
-                missing(opt, "-w", src1, src2, x - 1);
-            }
-            if(!arg[0] || !is_numeric(arg, YES)) {
-
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
-                failure(EXIT_USAGE, opt, arg);
-            }
-            data.opts.wait = atof(arg);
-            if(data.opts.wait < 0) {
-
-                fprintf(stderr, "bad wait specification `%s' used\n", opt);
-                failure(EXIT_USAGE, opt, arg);
-            }
             continue;
         }
         if(!strcmp(opt, "-q") || !strcmp(opt, "--queries")) {

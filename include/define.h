@@ -15,8 +15,6 @@
 "  -n                                   Do not resolve IP addresses to their domain names\n"\
 "  -p port  --port=port                 Set the initial destination port to use."\
                                         " Default is 33434\n"\
-"  -w waittime  --wait=waittime         Set the number of seconds to wait for response to a probe."\
-                                        " Default is 0.5\n"\
 "  -q nqueries  --queries=nqueries      Set the number of probes per each hop. Default is 3\n"\
 "  --help                               Read this help and exit\n"\
 "\n"\
