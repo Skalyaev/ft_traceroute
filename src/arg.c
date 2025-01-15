@@ -176,7 +176,7 @@ void getargs(const int ac, char** const av) {
     for(int x = 1; x < ac; x++) {
 
         if(strcmp(av[x], "--help")) continue;
-        printf(USAGE);
+        printf(USAGE, av[0]);
         exit(EXIT_SUCCESS);
     }
     data.opts.fragment = YES;
