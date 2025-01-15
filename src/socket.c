@@ -25,7 +25,7 @@ static byte init_udp() {
         if(setsockopt(data.udp_socket, SOL_SOCKET, SO_BINDTODEVICE,
                       data.opts.interface, strlen(data.opts.interface)) < 0) {
 
-            printf("setsocopt SO_BINDTODEVICE: %s\n", strerror(errno));
+            printf("setsockopt SO_BINDTODEVICE: %s\n", strerror(errno));
             data.code = errno;
             return EXIT_FAILURE;
         }
