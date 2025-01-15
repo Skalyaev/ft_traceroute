@@ -33,7 +33,7 @@ int main(int ac, char** av) {
 
     setlocale(LC_ALL, "");
     if(ac < 2) {
-        printf(USAGE);
+        printf(USAGE, av[0]);
         return EXIT_USAGE;
     }
     getargs(ac, av);
