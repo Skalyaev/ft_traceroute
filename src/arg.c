@@ -189,6 +189,7 @@ void getargs(const int ac, char** const av) {
     data.opts.queries = 3;
 
     int x = 1;
+    int argx = 0;
     char* opt = NULL;
     char* arg = NULL;
     while(x < ac) {
@@ -198,6 +199,7 @@ void getargs(const int ac, char** const av) {
         opt = NULL;
         arg = NULL;
 
+        argx = x;
         parsearg(&x, av, &opt, &arg);
         if(!opt) {
             if(!arg) continue;
@@ -207,13 +209,13 @@ void getargs(const int ac, char** const av) {
 
                 if(!arg[0] || !is_numeric(arg, NO)) {
 
-                    fprintf(stderr, ERR_CMD_ARG, "packetlen", arg, x - 1);
+                    fprintf(stderr, ERR_CMD_ARG, "packetlen", arg, argx);
                     failure(EXIT_USAGE, opt, arg);
                 }
                 data.opts.packetlen = atoi(arg);
             }
             else {
-                fprintf(stderr, ERR_XTRA_ARG, arg, x - 1);
+                fprintf(stderr, ERR_XTRA_ARG, arg, argx);
                 failure(EXIT_USAGE, opt, arg);
             }
             continue;
@@ -228,11 +230,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-f first_ttl";
                 char* const src2 = "--first=first_ttl";
-                missing(opt, "-f", src1, src2, x - 1);
+                missing(opt, "-f", src1, src2, argx);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, argx);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.first = atoi(arg);
@@ -248,7 +250,7 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-i device";
                 char* const src2 = "--interface=device";
-                missing(opt, "-i", src1, src2, x - 1);
+                missing(opt, "-i", src1, src2, argx);
             }
             if(data.opts.interface) free(data.opts.interface);
             data.opts.interface = strdup(arg);
@@ -259,11 +261,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-m max_ttl";
                 char* const src2 = "--max-hops=max_ttl";
-                missing(opt, "-m", src1, src2, x - 1);
+                missing(opt, "-m", src1, src2, argx);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, argx);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.max_hops = atoi(arg);
@@ -289,11 +291,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-p port";
                 char* const src2 = "--port=port";
-                missing(opt, "-p", src1, src2, x - 1);
+                missing(opt, "-p", src1, src2, argx);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, argx);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.port = atoi(arg);
@@ -305,11 +307,11 @@ void getargs(const int ac, char** const av) {
 
                 char* const src1 = "-q nqueries";
                 char* const src2 = "--queries=nqueries";
-                missing(opt, "-q", src1, src2, x - 1);
+                missing(opt, "-q", src1, src2, argx);
             }
             if(!arg[0] || !is_numeric(arg, NO)) {
 
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
+                fprintf(stderr, ERR_OPT_ARG, opt, arg, argx);
                 failure(EXIT_USAGE, opt, arg);
             }
             data.opts.queries = atoi(arg);
@@ -320,7 +322,7 @@ void getargs(const int ac, char** const av) {
             }
             continue;
         }
-        fprintf(stderr, ERR_BAD_OPT, opt, x - 1);
+        fprintf(stderr, ERR_BAD_OPT, opt, argx);
         failure(EXIT_USAGE, opt, arg);
     }
     if(opt) free(opt);
