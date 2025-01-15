@@ -279,21 +279,6 @@ void getargs(const int ac, char** const av) {
             }
             continue;
         }
-        if(!strcmp(opt, "-N") || !strcmp(opt, "--sim-queries")) {
-            if(!arg) {
-
-                char* const src1 = "-N squeries";
-                char* const src2 = "--sim-queries=squeries";
-                missing(opt, "-N", src1, src2, x - 1);
-            }
-            if(!arg[0] || !is_numeric(arg, NO)) {
-
-                fprintf(stderr, ERR_OPT_ARG, opt, arg, x - 1);
-                failure(EXIT_USAGE, opt, arg);
-            }
-            data.opts.sim_queries = atoi(arg);
-            continue;
-        }
         if(!strcmp(opt, "-n")) {
 
             data.opts.resolve = NO;

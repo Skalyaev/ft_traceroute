@@ -2,16 +2,14 @@
 #define DEFINE_H
 
 #define USAGE "Usage:\n"\
-"  traceroute [ -ifmqn ] [ -i interface ] [ -f first_ttl ]"\
-" [ -m max_hops ] [ -q queries ] host [ packetlen ]\n"\
+"  %s [ -Ffimnpq ] [ -f first_ttl ] [ -i device ]"\
+" [ -m max_hops ] [ -p port ] [ -q nqueries ] host [ packetlen ]\n"\
 "Options:\n"\
 "  -F  --dont-fragment                  Do not fragment packets\n"\
 "  -f first_ttl  --first=first_ttl      Start from the first_ttl hop (instead from 1)\n"\
 "  -i device  --interface=device        Specify a network interface to operate with\n"\
 "  -m max_ttl  --max-hops=max_ttl       Set the max number of hops (max TTL to be reached)."\
                                         " Default is 30\n"\
-"  -N squeries  --sim-queries=squeries  Set the number of probes to be tried simultaneously."\
-                                        " Default is 16\n"\
 "  -n                                   Do not resolve IP addresses to their domain names\n"\
 "  -p port  --port=port                 Set the initial destination port to use."\
                                         " Default is 33434\n"\
